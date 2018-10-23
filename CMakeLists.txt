@@ -8,7 +8,7 @@ configure_file(version.h.in version.h)
 
 add_executable(ip_filter main.cpp)
 
-add_library(helloworld_lib lib.cpp)
+add_library(homework_lib lib.cpp)
 
 add_executable(test_main_cli test_main.cpp)
 
@@ -23,9 +23,13 @@ set_target_properties(test_main_cli PROPERTIES
 	INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
 )
 
+target_link_libraries(ip_filter
+	homework_lib
+)
+
 target_link_libraries(test_main_cli
 	${Boost_LIBRARIES}
-	helloworld_lib
+	homework_lib
 )
 
 install(TARGETS ip_filter RUNTIME DESTINATION bin)
