@@ -3,8 +3,8 @@
 #include <string>
 #include <vector>
 
-typedef std::string string;
-typedef std::vector<string> StringVector;
+using string = std::string;
+using StringVector = std::vector<string>;
 
 namespace str {
 

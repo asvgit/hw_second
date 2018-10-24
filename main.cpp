@@ -5,7 +5,7 @@
 #include <memory>
 #include "lib.h"
 
-int main(int argc, char const *argv[]) {
+int main() {
     try {
         std::vector<StringVector> ip_pool;
 
@@ -39,7 +39,8 @@ int main(int argc, char const *argv[]) {
         }
 
 		using filter_type = std::vector<std::shared_ptr<StringVector>>;
-		std::vector<filter_type> filters = {{}, {}, {}}; // filter_1; filter_46_70; filter_any_46; 
+		// filter_1 filter_46_70 filter_any_46; 
+		std::vector<filter_type> filters = {{}, {}, {}};
 		for (const auto &ip : ip_pool) {
 			if (ip.front() == "1") {
 				filters[0].push_back(std::make_shared<StringVector>(ip));
