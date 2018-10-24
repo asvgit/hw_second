@@ -13,7 +13,7 @@ add_library(homework_lib lib.cpp)
 add_executable(test_main_cli test_main.cpp)
 
 set_target_properties(ip_filter test_main_cli PROPERTIES
-	CXX_STANDARD 14
+	CXX_STANDARD 17
 	CXX_STANDARD_REQUIRED ON
 	COMPILE_OPTIONS "-Wpedantic;-Wall;-Wextra"
 )
