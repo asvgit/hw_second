@@ -3,9 +3,8 @@
 #include <string>
 #include <vector>
 
-using vectop = std::vector<std::string>;
-using string = std::string;
-using StringVector = std::vector<string>;
+typedef std::string string;
+typedef std::vector<string> StringVector;
 
 namespace str {
 
