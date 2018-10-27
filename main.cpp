@@ -1,10 +1,23 @@
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
+#include <sstream>
 #include <iterator>
 #include <algorithm>
 #include <memory>
 #include "lib.h"
+
+template<typename T>
+bool filter(const int cond, const T &arg) {
+	return cond == std::stoi(arg);
+}
+
+template<typename T, typename... Args>
+bool filter(const int cond, const T &arg, const Args&... args) {
+	if (cond == std::stoi(arg))
+		return true;
+	return filter(cond, args...);
+}
 
 int main() {
 	try {
@@ -25,8 +38,12 @@ int main() {
 			return true;
 		});
 
-		auto print_ip = [](const auto &ip) {
-			std::copy(ip.begin(), ip.end(), std::ostream_iterator<string>(std::cout,"."));
+		auto print_ip = [](const StringVector &ip) {
+			for(const auto &ip_part : ip) {
+				if (ip_part != ip[0])
+					std::cout << ".";
+				std::cout << ip_part;
+			}
 			std::cout << std::endl;
 		};
 
@@ -37,12 +54,12 @@ int main() {
 		// filter_1 filter_46_70 filter_any_46; 
 		std::vector<filter_type> filters = {{}, {}, {}};
 		for (const auto &ip : ip_pool) {
-			if (ip.front() == "1") {
+			if (filter(1, ip.front())) {
 				filters[0].push_back(std::make_shared<StringVector>(ip));
-			} else if (ip[0] == "46" && ip[1] == "70") {
+			} else if (filter(46, ip[0]) && filter(70, ip[1])) {
 				filters[1].push_back(std::make_shared<StringVector>(ip));
 			}
-			if (std::find(ip.cbegin(), ip.cend(), "46") != ip.end()) {
+			if (filter(46, ip[0], ip[1], ip[2], ip[3])) {
 				filters[2].push_back(std::make_shared<StringVector>(ip));
 			}
 		}
