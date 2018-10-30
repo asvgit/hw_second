@@ -9,34 +9,34 @@
 
 template<typename T>
 bool filter(const int cond, const T &arg) {
-	return cond == std::stoi(arg);
+	return cond == arg;
 }
 
 template<typename T, typename... Args>
 bool filter(const int cond, const T &arg, const Args&... args) {
-	if (cond == std::stoi(arg))
+	if (cond == arg)
 		return true;
 	return filter(cond, args...);
 }
 
 int main() {
 	try {
-		std::vector<StringVector> ip_pool;
+		std::vector<IntVector> ip_pool;
+
+		auto stoi = [](const StringVector &sv) {
+			IntVector ip(sv.size());
+			std::transform(sv.begin(), sv.end()
+					, ip.begin(), [](auto l) { return std::stoi(l); });
+			return ip;
+		};
 
 		for(std::string line; std::getline(std::cin, line);) {
 			StringVector v = str::split(line, '\t');
-			ip_pool.push_back(str::split(v.at(0), '.'));
+			ip_pool.push_back(stoi(str::split(v.at(0), '.')));
 		}
 
-		std::sort(ip_pool.begin(), ip_pool.end(), [](const auto &a, const auto &b) {
-			for(int i = 0; i < 4; ++i) {
-				const int first = std::stoi(a[i]), second = std::stoi(b[i]);
-				if (first == second)
-					continue;
-				return first > second;
-			}
-			return true;
-		});
+		std::sort(ip_pool.begin(), ip_pool.end());
+		std::reverse(ip_pool.begin(), ip_pool.end());
 
 		auto print_ip = [](const auto &ip) {
 			for(const auto &ip_part : ip) {
@@ -50,25 +50,23 @@ int main() {
 		for(const auto &ip : ip_pool)
 			print_ip(ip);
 
-		using filter_type = std::vector<std::shared_ptr<StringVector>>;
+		using filter_type = std::vector<std::shared_ptr<IntVector>>;
 		// filter_1 filter_46_70 filter_any_46; 
 		std::vector<filter_type> filters = {{}, {}, {}};
 		for (const auto &ip : ip_pool) {
 			if (filter(1, ip.front())) {
-				filters[0].push_back(std::make_shared<StringVector>(ip));
+				filters[0].push_back(std::make_shared<IntVector>(ip));
 			} else if (filter(46, ip[0]) && filter(70, ip[1])) {
-				filters[1].push_back(std::make_shared<StringVector>(ip));
+				filters[1].push_back(std::make_shared<IntVector>(ip));
 			}
 			if (filter(46, ip[0], ip[1], ip[2], ip[3])) {
-				filters[2].push_back(std::make_shared<StringVector>(ip));
+				filters[2].push_back(std::make_shared<IntVector>(ip));
 			}
 		}
 
-		// std::cout << std::endl; // Debug
 		for (const auto &f : filters) {
 			for (const auto &item : f)
 				print_ip(*item);
-			// std::cout << std::endl; // Debug
 		}
 	} catch(const std::exception &e) {
 		std::cerr << e.what() << std::endl;

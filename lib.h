@@ -5,6 +5,7 @@
 
 typedef std::string string;
 typedef std::vector<string> StringVector;
+typedef std::vector<int> IntVector;
 
 namespace str {
 
