@@ -38,9 +38,9 @@ int main() {
 			return true;
 		});
 
-		auto print_ip = [](const StringVector &ip) {
+		auto print_ip = [](const auto &ip) {
 			for(const auto &ip_part : ip) {
-				if (ip_part != ip[0])
+				if (&ip_part != &ip.front())
 					std::cout << ".";
 				std::cout << ip_part;
 			}
