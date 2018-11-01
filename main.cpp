@@ -23,20 +23,19 @@ int main() {
 	try {
 		std::vector<IntVector> ip_pool;
 
-		auto stoi = [](const StringVector &sv) {
+		auto stoi = [](const auto &sv) {
 			IntVector ip(sv.size());
 			std::transform(sv.begin(), sv.end()
 					, ip.begin(), [](auto l) { return std::stoi(l); });
 			return ip;
 		};
 
-		for(std::string line; std::getline(std::cin, line);) {
-			StringVector v = str::split(line, '\t');
-			ip_pool.push_back(stoi(str::split(v.at(0), '.')));
+		for(string line ; std::getline(std::cin, line);) {
+			auto v = str::split(line, '\t');
+			ip_pool.push_back(stoi(str::split(v.front(), '.')));
 		}
 
-		std::sort(ip_pool.begin(), ip_pool.end());
-		std::reverse(ip_pool.begin(), ip_pool.end());
+		std::sort(ip_pool.begin(), ip_pool.end(), std::greater<IntVector>());
 
 		auto print_ip = [](const auto &ip) {
 			for(const auto &ip_part : ip) {
