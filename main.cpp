@@ -49,23 +49,24 @@ int main() {
 		for(const auto &ip : ip_pool)
 			print_ip(ip);
 
-		using filter_type = std::vector<std::shared_ptr<IntVector>>;
 		// filter_1 filter_46_70 filter_any_46; 
-		std::vector<filter_type> filters = {{}, {}, {}};
+		std::vector<IntVector> filters = {{}, {}, {}};
+		int ind = 0;
 		for (const auto &ip : ip_pool) {
 			if (filter(1, ip.front())) {
-				filters[0].push_back(std::make_shared<IntVector>(ip));
+				filters[0].push_back(ind);
 			} else if (filter(46, ip[0]) && filter(70, ip[1])) {
-				filters[1].push_back(std::make_shared<IntVector>(ip));
+				filters[1].push_back(ind);
 			}
 			if (filter(46, ip[0], ip[1], ip[2], ip[3])) {
-				filters[2].push_back(std::make_shared<IntVector>(ip));
+				filters[2].push_back(ind);
 			}
+			++ind;
 		}
 
 		for (const auto &f : filters) {
 			for (const auto &item : f)
-				print_ip(*item);
+				print_ip(ip_pool[item]);
 		}
 	} catch(const std::exception &e) {
 		std::cerr << e.what() << std::endl;
